@@ -1,0 +1,97 @@
+# The values this mod patches, one per line:
+#
+#   FILE<TAB>PROPERTY<TAB>BASE<TAB>OP<TAB>LIMIT<TAB>SCOPE
+#
+# FILE is the MBIN path the game uses, relative to the data root.
+# PROPERTY is the field to rewrite.
+# BASE is the value the game ships today.
+# OP is mul (BASE x factor) or div (BASE / factor).
+# LIMIT is the upper bound for mul and the lower bound for div, so no value
+# can reach zero or run away.
+# SCOPE tags the row. A variant asks for scopes with a factor each, so one
+# group can be scaled differently from another.
+#
+# The render step turns this table into the Lua patch list and into the
+# expected values that make verify checks the built EXML against.
+#
+# The scopes:
+#   speed     the speed of the flight out of the bay, and the boost on it
+#   climb     the time the ship spends rising off the pad and turning to
+#             face out of the station
+#   handoff   the speed the player gets control back at
+#   height    the height the ship climbs to before it turns out
+#   distance  how far it carries on out before the player takes over
+#
+# height and distance are not asked for by any shipped variant. They are
+# here so a test build can switch one on by adding the scope to a variant
+# in the Makefile, without the table having to change.
+#
+# Every file the game reads this from carries the same GcOutpostComponentData
+# block, but the values in it differ per location, so each file has its own
+# rows. The space stations fly out at 500 and boost at 120, the dock node at
+# 100 and 10, and the anomaly at 300 and 400.
+#
+# What testing in game showed:
+#   10x at a space station: the ship leaves the bay correctly and the
+#     departure reads as much faster. The flight out and the climb together
+#     are what make the difference.
+#   Not yet tested: the anomaly and the Biggs stations.
+#
+# Deliberately left alone:
+#   TakeOffExtraAIHeight and TakeOffProgressForExtraHeight, which are about
+#     the height NPC ships get after they leave, not about the player's ship
+#   PostTakeOffExtraPlayerHeight, which is already 0 and does nothing
+#   TakeOffCost, which is launch thruster fuel and not a speed
+#   DockingRotateSpeed, which belongs to Faster Spaceship Docking Rotation
+#     Reloaded. This mod does not touch GCSPACESHIPGLOBALS at all, so the two
+#     have no file in common.
+#
+# Nothing here is a shared setting: every value lives in the entity of the
+# location it applies to.
+#
+# The outposts are not in this table. Their landing runs on different values
+# and the outpost files are not patched, so a departure from an outpost is
+# left as the game ships it.
+
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffSpeed	100	mul	10000	speed
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffBoost	10	mul	10000	speed
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffHeight	10	div	1.0	height
+MODELS/SPACE/SPACESTATION/MODULARPARTS/ENTITIES/STATION_DOCK.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffSpeed	500	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffBoost	120	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffHeight	3	div	1.0	height
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffSpeed	500	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffBoost	120	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffHeight	3	div	1.0	height
+MODELS/SPACE/SPACESTATION/SPACESTATION/ENTITIES/STATION_ABANDONED.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffSpeed	500	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffBoost	120	mul	10000	speed
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffHeight	3	div	1.0	height
+MODELS/SPACE/SPACESTATION/SPACESTATIONTYPEB/ENTITIES/STATIONTYPEB.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffSpeed	300	mul	10000	speed
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffBoost	400	mul	10000	speed
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffAlignTime	1.5	div	0.05	climb
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffHeight	4	div	1.0	height
+MODELS/SPACE/NEXUS/NEXUS/ENTITIES/NEXUS.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffSpeed	300	mul	10000	speed
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffBoost	400	mul	10000	speed
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffHeight	4	div	1.0	height
+MODELS/SPACE/NEXUS/NEXUSEXTERIOR/ENTITIES/NEXUSEXTERIOR.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance

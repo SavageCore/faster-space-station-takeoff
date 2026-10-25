@@ -1,0 +1,40 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Faster Space Station Takeoff</moduleName>
+  <installSteps order="Explicit">
+    <installStep name="Choose takeoff speed">
+      <optionalFileGroups order="Explicit">
+        <group name="Speed" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="10x">
+              <description>10x faster station and anomaly takeoff</description>
+              <files>
+                <folder source="10x" destination="Faster Space Station Takeoff - 10x" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="5x">
+              <description>5x faster station and anomaly takeoff</description>
+              <files>
+                <folder source="5x" destination="Faster Space Station Takeoff - 5x" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="2x">
+              <description>2x faster station and anomaly takeoff</description>
+              <files>
+                <folder source="2x" destination="Faster Space Station Takeoff - 2x" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>
