@@ -100,8 +100,7 @@ the speed labelled on every segment, and a timer that runs from the frame the
 ship leaves the pad to the frame the player gets control back.
 
 ```sh
-python3 assets/combine.py            # lossless master, 2560x1440
-python3 assets/combine.py --web      # browser friendly, crf 18
+python3 assets/combine.py            # lossless master, 2560x1440, for upload
 ```
 
 Both ends of the timer are found in the footage rather than by hand. The
@@ -111,7 +110,7 @@ the scripted flight stops driving the ship: the flight moves most of the
 screen every frame, and once control is back the ship coasts and the picture
 barely changes.
 
-The video is re-encoded losslessly by default, so it is bit identical to the
+The video is re-encoded losslessly, so it is bit identical to the
 recordings apart from the overlay. The audio is re-encoded, because the
 segments have to be joined and the sources are AAC.
 
